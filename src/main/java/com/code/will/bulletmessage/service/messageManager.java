@@ -42,6 +42,7 @@ public class MessageManager {
 
         if(dyBulletScreenClient != null){
             dyBulletScreenClient.stopClient();
+            log.info("客户端正在停止......");
         }else {
             log.info("客户端已停止!");
         }
