@@ -4,9 +4,6 @@ package com.code.will.bulletmessage.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.InetAddress;
@@ -23,7 +20,7 @@ import java.util.Map;
 public class DyBulletScreenClient
 {
 
-	private static DyBulletScreenClient instance;
+	private static volatile DyBulletScreenClient instance;
 	
 	//第三方弹幕协议服务器地址
 	private static final String hostName = "openbarrage.douyutv.com";
@@ -50,7 +47,11 @@ public class DyBulletScreenClient
      */
     public static DyBulletScreenClient getInstance(){
     	if(null == instance){
-    		instance = new DyBulletScreenClient();
+    		synchronized (DyBulletScreenClient.class){
+    			if(null == instance){
+					instance = new DyBulletScreenClient();
+				}
+			}
     	}
     	return instance;
     }
@@ -77,6 +78,13 @@ public class DyBulletScreenClient
      */
     public boolean getReadyFlag(){
     	return readyFlag;
+    }
+
+    /**
+     * 停止获取弹幕信息
+     */
+    public void stopClient(){
+        readyFlag = false;
     }
     
     /**
