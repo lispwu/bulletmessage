@@ -17,9 +17,10 @@ public class NettyBulletClient {
 
     private static final String HOST = "openbarrage.douyutv.com";
 
+    private EventLoopGroup group;
 
-    public void start() throws Exception{
-        EventLoopGroup group = new NioEventLoopGroup();
+    public void start(int roomid) throws Exception{
+        group = new NioEventLoopGroup();
 
         try{
             Bootstrap b = new Bootstrap();
@@ -34,7 +35,7 @@ public class NettyBulletClient {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new DYMessageDecoder());
                             p.addLast(new DYMessageEncoder());
-                            p.addLast(new ClientHandler());
+                            p.addLast(new ClientHandler(roomid));
 
                         }
                     });
@@ -46,7 +47,9 @@ public class NettyBulletClient {
 
     }
 
-    public static void main(String[] args) throws Exception{
-        new NettyBulletClient().start();
+
+    public void stop() throws Exception{
+        group.shutdownGracefully().sync();
     }
+
 }

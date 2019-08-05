@@ -2,6 +2,7 @@ package com.code.will.bulletmessage.controller;
 
 
 import com.code.will.bulletmessage.dto.CommonResponse;
+import com.code.will.bulletmessage.service.BulletMessageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/message")
 public class MessageController {
 
-//    @Autowired
-//    MessageManager messageManager;
-//
-//    @RequestMapping("/startFetch/{roomId}")
-//    public ResponseEntity start(@PathVariable String roomId){
-//        messageManager.startBulletCient(roomId);
-//        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
-//    }
-//
-//    @RequestMapping("/stopClient")
-//    public ResponseEntity stop(){
-//        messageManager.stopBulletClient();
-//        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
-//    }
+    @Autowired
+    BulletMessageManager messageManager;
+
+    @RequestMapping("/startFetch/{roomId}")
+    public ResponseEntity start(@PathVariable int roomId) throws Exception{
+        messageManager.startClient(roomId);
+        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
+    }
+
+    @RequestMapping("/stopClient")
+    public ResponseEntity stop() throws Exception{
+        messageManager.stopClient();
+        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
+    }
 
 }

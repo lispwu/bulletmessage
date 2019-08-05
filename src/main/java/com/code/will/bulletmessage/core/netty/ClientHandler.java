@@ -8,7 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
-    private int roomid = 606118;
+    private int roomid;
+
+    public ClientHandler(int roomid) {
+        this.roomid = roomid;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
