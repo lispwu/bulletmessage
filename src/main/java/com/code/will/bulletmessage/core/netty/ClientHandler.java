@@ -20,7 +20,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         log.info("正在登陆房间：{}",roomid);
         String loginMsg = String.format("type@=loginreq/roomid@=%d/",roomid);
 
+//        String loginMsg2 = String.format("type@=loginreq/roomid@=%d/",74751);
+
         ctx.writeAndFlush(loginMsg);
+//        ctx.writeAndFlush(loginMsg2);
     }
 
     @Override

@@ -23,10 +23,22 @@ public class MessageController {
         return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
     }
 
-    @RequestMapping("/stopClient")
-    public ResponseEntity stop() throws Exception{
-        messageManager.stopClient();
+    @RequestMapping("/stopRoom/{roomId}")
+    public ResponseEntity stopSpecificRoom(@PathVariable String roomId) throws Exception{
+        messageManager.stopSpecificRoom(roomId);
         return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), null), HttpStatus.OK);
+    }
+
+    @RequestMapping("/stopAllRoom")
+    public ResponseEntity stopAllRoom() throws Exception{
+        String result = messageManager.stopAllRoom();
+        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), result), HttpStatus.OK);
+    }
+
+    @RequestMapping("/listAllRoom")
+    public ResponseEntity listAllRoom() throws Exception{
+        String result = messageManager.listAllRoom();
+        return new ResponseEntity(new CommonResponse(String.valueOf(HttpStatus.OK.value()), CommonResponse.ResultDescription.SUCCESS.toString(), result), HttpStatus.OK);
     }
 
 }
