@@ -10,16 +10,21 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
 
-public class NettyBulletClient {
+public class NettyBulletClient implements Runnable{
 
     private static final int PORT = 8601;
 
     private static final String HOST = "openbarrage.douyutv.com";
 
-    private EventLoopGroup group;
+    private String roomId;
 
-    public void start(int roomid) throws Exception{
-        group = new NioEventLoopGroup();
+    public NettyBulletClient(String roomId) {
+        this.roomId = roomId;
+    }
+
+    @Override
+    public void run() {
+        EventLoopGroup group = new NioEventLoopGroup();
 
         try{
             Bootstrap b = new Bootstrap();
@@ -34,21 +39,20 @@ public class NettyBulletClient {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new DYMessageDecoder());
                             p.addLast(new DYMessageEncoder());
-                            p.addLast(new ClientHandler(roomid));
+                            p.addLast(new ClientHandler(roomId));
 
                         }
                     });
             ChannelFuture f = b.connect().sync();
             f.channel().closeFuture().sync();
-        }finally {
-            group.shutdownGracefully().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                group.shutdownGracefully().sync();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-
     }
-
-
-    public void stop() throws Exception{
-        group.shutdownGracefully().sync();
-    }
-
 }

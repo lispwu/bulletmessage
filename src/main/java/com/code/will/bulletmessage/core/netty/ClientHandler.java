@@ -8,17 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
-    private int roomid;
+    private String roomId;
 
-    public ClientHandler(int roomid) {
-        this.roomid = roomid;
+    public ClientHandler(String roomid) {
+        this.roomId = roomid;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        log.info("正在登陆房间：{}",roomid);
-        String loginMsg = String.format("type@=loginreq/roomid@=%d/",roomid);
+        log.info("正在登陆房间：{}",roomId);
+        String loginMsg = String.format("type@=loginreq/roomid@=%s/",roomId);
 
 //        String loginMsg2 = String.format("type@=loginreq/roomid@=%d/",74751);
 
@@ -33,7 +33,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         switch (type){
             case "loginres":
                 log.info("login result");
-                String joingrop=String.format("type@=joingroup/rid@=%d/gid@=-9999/", roomid);
+                String joingrop=String.format("type@=joingroup/rid@=%s/gid@=-9999/", roomId);
                 channelHandlerContext.writeAndFlush(joingrop);
                 break;
             case "qausrespond":
